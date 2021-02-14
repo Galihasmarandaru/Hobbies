@@ -21,6 +21,8 @@ Route::get('/info', function () {
     return view('info');
 });
 
+Route::get('/test/{name}/{age}', 'HobbyController@index'); // pointing  ke func index di HobbyController ketika /test
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
