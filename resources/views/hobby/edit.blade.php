@@ -7,8 +7,9 @@
             <div class="card">
                 <div class="card-header">Edit Hobby</div>
                 <div class="card-body">
-                    <form action="/hobby" method="post">
+                    <form action="/hobby/{{$hobby->id}}" method="post">
                         @csrf
+                        @method('PUT')
                         <div class="form-group">
                             <label for="name">Name</label>
                             <input type="text" class="form-control {{ $errors->has('name') ? 'border-danger' : '' }}"
@@ -22,7 +23,7 @@
                                 rows="5">{{$hobby->description ?? old('name')}}</textarea>
                             <small class="form-text text-danger">{!! $errors->first('description') !!}</small>
                         </div>
-                        <input class="btn btn-primary mt-4" type="submit" value="Save Hobby">
+                        <input class="btn btn-primary mt-4" type="submit" value="Update Hobby">
                     </form>
                     <a class="btn btn-primary float-right" href="/hobby"><i class="fas fa-arrow-circle-up"></i> Back</a>
                 </div>
