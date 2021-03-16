@@ -14,8 +14,18 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('starting_page');
 });
+
+Route::get('/info', function () {
+    return view('info');
+});
+
+/*
+Route::get('/test/{name}/{age}', 'HobbyController@index'); // pointing  ke func index di HobbyController ketika /test
+*/
+
+Route::resource('hobby', 'HobbyController'); // terdapat 7 routes, untuk melihatnya jalankan php artisan route:list --name=hobby
 
 Auth::routes();
 
