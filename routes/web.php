@@ -26,6 +26,7 @@ Route::get('/test/{name}/{age}', 'HobbyController@index'); // pointing  ke func 
 */
 
 Route::resource('hobby', 'HobbyController'); // terdapat 7 routes, untuk melihatnya jalankan php artisan route:list --name=hobby
+Route::resource('tag', 'TagController');
 
 Auth::routes();
 
