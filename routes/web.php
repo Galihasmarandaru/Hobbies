@@ -27,7 +27,13 @@ Route::get('/test/{name}/{age}', 'HobbyController@index'); // pointing  ke func 
 
 Route::resource('hobby', 'HobbyController'); // terdapat 7 routes, untuk melihatnya jalankan php artisan route:list --name=hobby
 Route::resource('tag', 'TagController');
+Route::resource('user', 'UserController');
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/hobby/tag/{tag_id}', 'hobbyTagController@getFilteredHobbies')->name('hobby_tag');
+
+// Attach Detach Tags to Hobbies
+Route::get('/hobby/{hobby_id}/tag/{tag_id}/attach', 'hobbyTagController@attachTag');
+Route::get('/hobby/{hobby_id}/tag/{tag_id}/detach', 'hobbyTagController@detachTag');

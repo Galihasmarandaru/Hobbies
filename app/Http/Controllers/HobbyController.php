@@ -3,10 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Hobby;
+use App\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
+// use Illuminate\Support\Carbon;
 
 class HobbyController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth')->except(['index', 'show']);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +22,9 @@ class HobbyController extends Controller
      */
     public function index()
     {
-        $hobbies = Hobby::all(); // Hobby adalah model
+        // $hobbies = Hobby::all(); // Hobby adalah model
+        // $hobbies = Hobby::paginate(10);
+        $hobbies = Hobby::orderBy('created_at', 'DESC')->paginate(10);
 
         // dd($hobbies);
         return view('hobby.index')->with(['hobbies' => $hobbies]);
@@ -42,10 +52,11 @@ class HobbyController extends Controller
             'name' => 'required|min:3',
             'description' => 'required|min:5',
         ]);
-        
+
         $hobby = new Hobby([
             'name' => $request['name'],
-            'description' => $request['description']
+            'description' => $request['description'],
+            'user_id' => auth()->id()
         ]);
         $hobby->save();
         return $this->index()->with([
@@ -61,8 +72,14 @@ class HobbyController extends Controller
      */
     public function show(Hobby $hobby)
     {
+        $allTags = Tag::all();
+        $usedTags = $hobby->tags;
+        $availableTags = $allTags->diff($usedTags);
+
         return view('hobby.show')->with([
-            'hobby' => $hobby
+            'hobby' => $hobby,
+            'availableTags' => $availableTags,
+            'message_success' => Session::get('message_success') // bisa dibuat pakai back with
         ]);
     }
 
@@ -92,7 +109,7 @@ class HobbyController extends Controller
             'name' => 'required|min:3',
             'description' => 'required|min:5',
         ]);
-        
+
         $hobby->update([
             'name' => $request['name'],
             'description' => $request['description']
