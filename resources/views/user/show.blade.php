@@ -18,7 +18,15 @@
                                     @if($user->hobbies->count() > 0)
                                         @foreach($user->hobbies as $hobby)
                                             <li class="list-group-item">
-                                                <a title="Show Details" href="/hobby/{{ $hobby->id }}">{{ $hobby->name }}</a>
+                                                @if (file_exists('img/hobbies/' . $hobby->id . '_thumb.jpg'))
+                                                <a title="Show Details" href="/hobby/{{ $hobby->id }}">
+                                                    <img src="/img/hobbies/{{ $hobby->id }}_thumb.jpg" alt="Hobby Thumb">
+                                                </a>
+                                                @endif
+                                                &nbsp;<a title="Show Details" href="/hobby/{{ $hobby->id }}">
+                                                    {{ $hobby->name }}
+                                                </a>
+                                                {{-- <a title="Show Details" href="/hobby/{{ $hobby->id }}">{{ $hobby->name }}</a> --}}
                                                 <span class="float-right mx-2">{{ $hobby->created_at->diffForHumans() }}</span>
                                                 <br>
                                                 @foreach($hobby->tags as $tag)
@@ -27,11 +35,11 @@
                                             </li>
                                         @endforeach
                                 </ul>
-                                @else
-                                    <p>
-                                        {{ $user->name }} has not created any hobbies yet.
-                                    </p>
-                                @endif
+                                    @else
+                                        <p>
+                                            {{ $user->name }} has not created any hobbies yet.
+                                        </p>
+                                    @endif
                             </div>
                             <div class="col-md-3">
                                 <img class="img-thumbnail" src="/img/300x400.jpg" alt="{{ $user->name }}">
