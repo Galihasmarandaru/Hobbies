@@ -8,13 +8,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 // use Illuminate\Support\Carbon;
 use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Gate;
 
 class HobbyController extends Controller
 {
 
     public function __construct()
     {
-        $this->middleware('auth')->except(['index', 'show']);
+        $this->middleware('auth')->except(['index', 'show']); //middleware bisa juga di web.php, di sini bisa custom yang except
     }
     /**
      * Display a listing of the resource.
@@ -107,6 +108,8 @@ class HobbyController extends Controller
      */
     public function edit(Hobby $hobby)
     {
+        abort_unless(Gate::allows('update', $hobby), 403);
+
         return view('hobby.edit')->with([
             'hobby' => $hobby,
             'message_success' => Session::get('message_success'),
@@ -123,6 +126,8 @@ class HobbyController extends Controller
      */
     public function update(Request $request, Hobby $hobby)
     {
+        abort_unless(Gate::allows('update', $hobby), 403);
+
         $request->validate([
             'name' => 'required|min:3',
             'description' => 'required|min:5',
@@ -152,6 +157,7 @@ class HobbyController extends Controller
      */
     public function destroy(Hobby $hobby)
     {
+        abort_unless(Gate::allows('delete', $hobby), 403);
         $oldName = $hobby->name;
         $hobby->delete();
         return $this->index()->with([
